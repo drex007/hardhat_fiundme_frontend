@@ -5,10 +5,12 @@ import { abi, contractAddress } from './constants.js'
 const connectButton = document.getElementById("connectButton")
 const fundButton = document.getElementById("fundButton")
 const getBalanceButton = document.getElementById("balanceButton")
-
+const withdrawButton = document.getElementById("withdrawButton")
 connectButton.onclick = connect
 fundButton.onclick = fund
 getBalanceButton.onclick = getBalance
+withdrawButton.onclick = withdraw
+
 
 
 console.log(ethers)
@@ -77,4 +79,31 @@ function listenForTransactionMine(transactionResponse, provider) {
 
 
     })
+}
+
+//Withdraw function 
+
+
+async function withdraw() {
+    if (typeof window.ethereum !== 'undefined') {
+        console.log('wuthdrawingggggg............................');
+        //Provider => connection to the blockachian and the wallet itself
+        //Signer => the account that is presently present knn the metamask that can initiaite and sign transactions 
+        //COntract that we are interacting with (Contract ABI and the address)
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);  // Accesss the blockchain through web3 provider
+        const signer = provider.getSigner()
+        const contract = new ethers.Contract(contractAddress, abi, signer)
+        try {
+            const transactionResponse = await contract.withdraw()
+            await listenForTransactionMine(transactionResponse, provider) // Confirming transactions
+            console.log('done============>')
+        } catch (e) {
+            console.log(e);
+        }
+
+
+    }
+
+
 }
