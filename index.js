@@ -4,8 +4,11 @@ import { abi, contractAddress } from './constants.js'
 
 const connectButton = document.getElementById("connectButton")
 const fundButton = document.getElementById("fundButton")
+const getBalanceButton = document.getElementById("balanceButton")
+
 connectButton.onclick = connect
 fundButton.onclick = fund
+getBalanceButton.onclick = getBalance
 
 
 console.log(ethers)
@@ -22,8 +25,23 @@ async function connect() {
     }
 }
 
+
+async function getBalance() {
+    if (typeof window.ethereum !== 'undefined') {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balance = await provider.getBalance(contractAddress)
+        console.log(balance.toString())
+        console.log(ethers.utils.formatEther(balance))
+
+
+    } else {
+        console.log('Please ensure wallet is connected')
+    }
+
+}
 async function fund() {
-    const ethAmount = "0.1"
+    const ethAmount = document.getElementById("ethAmount").value
+    console.log('funding with ', ethAmount)
     if (typeof window.ethereum !== 'undefined') {
         //Provider => connection to the blockachian and the wallet itself
         //Signer => the account that is presently present knn the metamask that can initiaite and sign transactions 
