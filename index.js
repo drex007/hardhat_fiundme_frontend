@@ -36,14 +36,27 @@ async function fund() {
             const transactionResponse = await contract.fund({
                 value: ethers.utils.parseEther(ethAmount)
             })
+            await listenForTransactionMine(transactionResponse, provider) // Confirming transactions
+            console.log('done============>')
         } catch (e) {
             console.log(e);
         }
-        console.log('this is signer', signer);
-
-
+        console.log('this is signer', signer)
 
     }
 
 
+}
+
+function listenForTransactionMine(transactionResponse, provider) {
+    console.log('transactionMine', transactionResponse)
+    // The return new promise and the resolve() function ensures that this process is completed before heading to the next
+    return new Promise((resolve, reject) => {
+        provider.once(transactionResponse.hash, (transactionReceipt) => {
+            console.log('completed', transactionReceipt.confirmations);
+            resolve()
+        })
+
+
+    })
 }
