@@ -24,7 +24,6 @@ async function connect() {
 
 async function fund() {
     const ethAmount = "0.1"
-
     if (typeof window.ethereum !== 'undefined') {
         //Provider => connection to the blockachian and the wallet itself
         //Signer => the account that is presently present knn the metamask that can initiaite and sign transactions 
